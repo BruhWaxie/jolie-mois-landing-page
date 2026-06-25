@@ -6,6 +6,10 @@ const collectionLinks = document.querySelectorAll('.collections a')
 const navCategories = document.querySelector('.navigational-categories')
 const navSects = document.querySelectorAll('.nav-sect')
 const blurryBg = document.querySelector('.blurry-bg')
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileHeadings = document.querySelectorAll('.mobile-menu-heading');
+const coverImg = document.querySelector('main img')
 
 let menuTimeout
 
@@ -24,13 +28,23 @@ function calculateRects() {
     targetLogoRect = navLogo.getBoundingClientRect();
     
     updateScroll();
+
+    if (window.innerWidth <= 800) {
+        coverImg.src = './src/imgs/landing-page/Jolie-Mois-Landing-Screen-Phone.png'
+    } else {
+        coverImg.src = './src/imgs/landing-page/Jolie-Mois-Landing-Screen.png'
+    }
+}
+
+function getScrollThreshold() {
+    return window.innerWidth < 1080 ? 600 : 1000;
 }
 
 function updateNavStyle() {
     let scrollY = window.scrollY;
     let isMenuOpen = navCategories.classList.contains('open');
 
-    if (scrollY > 1000 || isMenuOpen) {
+    if (scrollY > getScrollThreshold() || isMenuOpen) {
         nav.style.background = 'white';
         nav.querySelectorAll('.collections a, .settings-and-info *').forEach(link => link.style.color = 'black');
         nav.querySelectorAll('.collections a::after').forEach(line => line.style.background = 'black');
@@ -41,12 +55,17 @@ function updateNavStyle() {
         nav.querySelectorAll('.collections a::after').forEach(line => line.style.background = 'white');
         navLogo.querySelector('svg').style.fill = 'white';
     }
+    
+    if (typeof updateHamburgerColor === 'function') {
+        updateHamburgerColor();
+    }
 }
 
 function updateScroll() {
     let scrollY = window.scrollY;
 
-    if (scrollY > 1000) {
+    const threshold = getScrollThreshold();
+    if (scrollY > threshold) {
         floatingLogo.style.opacity = '0';
         floatingLogo.style.pointerEvents = 'none';
     } else {
@@ -54,7 +73,7 @@ function updateScroll() {
         floatingLogo.style.pointerEvents = 'auto';
         
         if (initialLogoRect && targetLogoRect) {
-            let progress = Math.max(0, Math.min(scrollY / 1000, 1));
+            let progress = Math.max(0, Math.min(scrollY / threshold, 1));
 
             let easeProgress = progress * progress;
             
@@ -71,7 +90,7 @@ function updateScroll() {
         }
     }
 
-    if (scrollY > 1000) {
+    if (scrollY > threshold) {
         if (!isScrolled) {
             navLogo.style.transition = 'none';
             navLogo.classList.add('scrolled');
@@ -101,6 +120,7 @@ calculateRects();
 
 collectionLinks.forEach((link, index) => {
     link.addEventListener('mouseenter', () => {
+        if (typeof isMobile === 'function' && isMobile()) return;
         clearTimeout(menuTimeout)
         navSects.forEach(sect => sect.classList.remove('active'))
         collectionLinks.forEach(l => l.classList.remove('active-link'))
@@ -195,3 +215,86 @@ stickers.forEach(sticker => {
         sticker.classList.remove('popped');
     });
 });
+
+// ===== Mobile Responsive Logic =====
+
+function isMobile() {
+    return window.innerWidth < 1080;
+}
+
+// Hamburger toggle
+hamburgerBtn.addEventListener('click', () => {
+    hamburgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    
+    // Prevent body scroll when menu is open
+    if (mobileMenu.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+
+    // Викликаємо оновлення кольору при відкритті/закритті
+    updateHamburgerColor();
+});
+
+// Accordion toggle
+mobileHeadings.forEach(heading => {
+    heading.addEventListener('click', () => {
+        const targetId = 'acc-' + heading.getAttribute('data-accordion');
+        const targetLinks = document.getElementById(targetId);
+        
+        // Close other open sections
+        mobileHeadings.forEach(h => {
+            if (h !== heading) {
+                h.classList.remove('active');
+                const otherId = 'acc-' + h.getAttribute('data-accordion');
+                const otherLinks = document.getElementById(otherId);
+                if (otherLinks) otherLinks.classList.remove('open');
+            }
+        });
+        
+        // Toggle current
+        heading.classList.toggle('active');
+        if (targetLinks) targetLinks.classList.toggle('open');
+    });
+});
+
+// Close mobile menu on resize to desktop
+function handleResize() {
+    if (!isMobile()) {
+        // Reset mobile menu state
+        hamburgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+        
+        // Close all accordions
+        mobileHeadings.forEach(h => {
+            h.classList.remove('active');
+            const id = 'acc-' + h.getAttribute('data-accordion');
+            const links = document.getElementById(id);
+            if (links) links.classList.remove('open');
+        });
+    }
+}
+
+window.addEventListener('resize', handleResize);
+
+// Update hamburger line colors to match nav state
+function updateHamburgerColor() {
+    if (!isMobile()) return;
+    
+    const navBg = nav.style.background;
+    const isWhiteBg = navBg === 'white' || hamburgerBtn.classList.contains('active');
+    
+    hamburgerBtn.querySelectorAll('.hamburger-line').forEach(line => {
+        line.style.background = isWhiteBg ? 'black' : 'white';
+    });
+}
+
+// Override blurryBg listener to guard for mobile
+blurryBg.removeEventListener('mouseenter', closeMenu);
+blurryBg.addEventListener('mouseenter', () => {
+    if (!isMobile()) closeMenu();
+});
+
