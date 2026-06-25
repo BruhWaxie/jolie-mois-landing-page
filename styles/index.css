@@ -1,0 +1,552 @@
+body {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+nav {
+    width: 100%;
+    height: 80px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: ease-in-out background 0.3s;
+}
+
+main {
+    width: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+    background: lightgreen;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: -3;
+}
+
+#vogueCollection {
+    height: 856px;
+}
+
+#bagsCollection {
+    height: 637px;
+}
+
+footer {
+    height: 546px;
+    background: black;
+    margin: 0;
+    padding: 36px;
+}
+
+section {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sectionContainer {
+    background: #fff;
+    width: 100%;
+    z-index: -1;
+    padding: 10px 0 60px 0;
+}
+
+/* Main */
+main img {
+    width: 100%;
+    transition: top linear 0.2s
+}
+
+.logo {
+    width: calc(100% - 150px);
+    position: fixed;
+    bottom: 40px;
+    fill: white;
+    left: 75px;
+}
+
+.scrollable-space {
+    width: 100%;
+    height: calc(1000px + 100vh);
+}
+
+/* Navbar */
+.nav-container {
+    max-width: 1440px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.02em;
+}
+
+nav a {
+    transition: color ease-in-out 0.3s;
+}
+
+.collections a {
+    position: relative;
+    text-decoration: none;
+}
+
+.collections a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+}
+
+.collections a.active-link::after {
+    width: 100%;
+}
+
+.collections, .settings-and-info {
+    display: flex;
+    gap: 48px;
+}
+
+.nav-logo {
+    width: 130px;
+    transition: opacity 0.5s ease-in-out;
+}
+
+nav:has(.collections a:hover) a, nav.nav-open a {
+    color: black;
+}
+
+nav:has(.collections a:hover), nav.nav-open {
+    background-color: white;
+}
+
+.nav-logo.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+nav:has(.collections a:hover) .nav-logo.hidden, nav.nav-open .nav-logo.hidden {
+    opacity: 1;
+}
+
+nav.nav-open .nav-logo svg, nav:has(.collections a:hover) .nav-logo svg {
+    fill: black;
+}
+
+.nav-logo svg {
+    transition: fill 0.3s ease;
+    fill: white;
+}
+
+.nav-logo.scrolled {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.blurry-bg {
+    z-index: 998;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.blurry-bg.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.navigational-categories {
+    width: 100%;
+    height: 0px;
+    background: #fff;
+    position: fixed;
+    top: 80px;
+    z-index: 999;
+    padding: 0 35px;
+    overflow: hidden;
+    transition: height 0.4s ease, padding 0.4s ease;
+}
+
+.navigational-categories.open {
+    height: 410px;
+    padding: 30px 35px;
+}
+
+/* Removed old .nav-sect rules, moved to below */
+
+.navigational-categories p {
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.highlight {
+    font-weight: 600;
+}
+
+.category-link-list {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0 0;
+    text-transform: uppercase;
+}
+
+.category-link-list li {
+    margin-bottom: 12px;
+}
+
+.category-link-list li a {
+    color: black;
+}
+
+.cat-list-breakpoint {
+    margin-top: 18px;
+}
+
+.navigational-categories > div.nav-sect {
+    display: flex;
+    gap: 150px;
+    position: absolute;
+    top: 30px;
+    left: 35px;
+    width: calc(100% - 70px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.navigational-categories.open .nav-sect.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nav-sect > * {
+    display: block;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    justify-content: space-between;
+    margin-bottom: 36px;
+}
+
+.category-line {
+    width: 40%;
+    height: 2px;
+    background: #000;
+}
+
+.category-title h1 {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.img-link, .img-link > img {
+    width: 300px;
+    height: 450px;
+}
+
+.showcase-roll {
+    display: flex;
+    gap: 80px;
+    justify-self: center;
+    position: relative;
+}
+
+.magnificent, .cosmic-beauty {
+    position: absolute;
+    filter: blur(3px);
+    font-family: "Merriweather", serif;
+    padding: 0;
+    margin: 0;
+    pointer-events: none;
+
+}
+
+.cosmic-beauty {
+    top: 32px;
+    left: -20px;
+    opacity: 0.8;
+    font-size: 96px;
+    z-index: 1;
+    animation: cosmic-animation 1s ease;
+    animation-timeline: view(block);
+}
+
+.magnificent {
+    font-size: 128px;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1;
+    animation: magnificent-animation 1s ease;
+    animation-timeline: view(block);
+}
+
+.vogue-title {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: -20px;
+    bottom: 180px;
+    font-family: 'Merriweather', serif;
+    z-index: 2;
+    pointer-events: none;
+    animation: vogue-animation 1s linear;
+    animation-timeline: view(block);
+}
+
+.showcase-roll .stickers {
+    height: 450px;
+    width: 1060px;
+    position: absolute;
+}
+
+.showcase-roll .stickers img {
+    position: absolute;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+.showcase-roll .stickers img:hover {
+    transform: scale(1.1);
+}
+
+.showcase-roll .stickers img.popped {
+    transform: scale(1.2);
+}
+
+.crab {
+    width: 240px;
+    height: 240px;
+    left: -120px;
+    bottom: -100px;
+}
+
+.sun {
+    width: 200px;
+    height: 200px;
+    right: -100px;
+    top: -60px;
+}
+
+.moon {
+    width: 250px;
+    height: 250px;
+    left: 200px;
+    bottom: 50px;
+}
+
+.explore-btn {
+    padding: 7px 14px;
+    border: #000 3px solid;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 60px;
+    box-shadow: #fff 2px 2px;
+    position: relative;
+    box-shadow: #000 3px 3px 0;
+    transition: all 0.2s linear;
+    z-index: 3;
+}
+
+.explore-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+#vogueCollection .explore-btn {
+    position: absolute;
+    bottom: 50px;
+}
+
+.footer-categories {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    justify-content: space-between;
+}
+
+.footer-categories p, .footer-categories a {
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.footer-categories, .footer-categories .category-options {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-grid {
+    display: flex;
+    height: 80%;
+}
+
+.main-footer-info {
+    width: 55%;
+    height: 100%;
+    position: relative;
+}
+
+.other-footer-info {
+    width: 45%;
+    height: 100%;
+    position: relative;
+}
+
+
+.footer-logo {
+    fill: #fff;
+    width: 528px;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+}
+
+.footer-categories p.highlight {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.category-option {
+    margin-bottom: 8px;
+}
+
+.region {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+}
+
+.region-info {
+    font-weight: 600;
+}
+
+.change-region {
+    padding: 0;
+    background: none;
+    color: #fff;
+    border: none;
+    margin: 0 0 0 12px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.website-author {
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.commercial-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+
+:root {
+    scrollbar-width: none;
+}
+
+
+.scrollbar {
+    height: 100vh;
+    width: 12px;
+    position: fixed;
+    right: 0;
+    z-index: 9999;
+    mix-blend-mode: difference;
+}
+
+.scroll-thumb {
+    width: 100%;
+    background: #fff;
+    height: calc(100vh / 100dvh * 100px);
+    position: relative;
+    animation: grow-top linear;
+    animation-timeline: scroll(root block);
+    cursor: grab;
+}
+
+@keyframes grow-top {
+  from {
+    top: 0%;
+  }
+  to {
+    top: calc(100% - (100vh / 100dvh * 100px));
+  }
+}
+
+@keyframes magnificent-animation {
+    from {
+        bottom: 0px;
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        bottom: 100px;
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes cosmic-animation {
+    from {
+        top: 0;
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        top: 120px;
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes vogue-animation {
+    from {
+        bottom: 90px;
+    }
+    to {
+        bottom: 270px;
+    }
+}
