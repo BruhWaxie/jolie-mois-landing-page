@@ -315,11 +315,10 @@ nav.nav-open .nav-logo svg, nav:has(.collections a:hover) .nav-logo svg {
     margin: 0;
     padding: 0;
     left: -20px;
-    bottom: 180px;
     font-family: 'Merriweather', serif;
     z-index: 2;
     pointer-events: none;
-    animation: vogue-animation 1s linear;
+    animation: vogue-animation 1s linear both;
     animation-timeline: view(block);
 }
 
@@ -547,6 +546,6 @@ nav.nav-open .nav-logo svg, nav:has(.collections a:hover) .nav-logo svg {
         bottom: 90px;
     }
     to {
-        bottom: 270px;
+        bottom: 360px;
     }
 }
